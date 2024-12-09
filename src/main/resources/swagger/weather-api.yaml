@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Weather Information Service
+  description: A simple service to provide weather information for up to 3 cities.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /weather/{city}:
+    get:
+      summary: Get weather data for a specific city
+      description: Retrieve weather information for a city stored in the service.
+      parameters:
+        - name: city
+          in: path
+          required: true
+          description: Name of the city
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Weather data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+        '404':
+          description: City not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /weather:
+    post:
+      summary: Add or update weather data
+      description: Add or update weather details for a city.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
+      responses:
+        '201':
+          description: Weather data added or updated successfully
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Get weather data for all cities
+      description: Retrieve weather information for all cities stored in the service.
+      responses:
+        '200':
+          description: Weather data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Weather'
+components:
+  schemas:
+    Weather:
+      type: object
+      properties:
+        city:
+          type: string
+          description: Name of the city
+        temp:
+          type: string
+          description: Temperature of the city
+        unit:
+          type: string
+          description: Unit of temperature (C or F)
+        date:
+          type: string
+          format: date
+          description: Date of the weather record
+        weather:
+          type: string
+          description: Weather condition (e.g., sunny, cloudy, etc.)
+      required:
+        - city
+        - temp
+        - unit
+        - date
+        - weather
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        status:
+          type: integer
+          description: HTTP status code
