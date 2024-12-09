@@ -119,5 +119,6 @@ json
 400 Bad Request: Returned for invalid input data during POST requests.
 ````
 
+![image](https://github.com/user-attachments/assets/e246777b-162c-47e5-8d8f-69b50fdd881d)
 
 
